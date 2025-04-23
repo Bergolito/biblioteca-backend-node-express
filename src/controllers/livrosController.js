@@ -3,13 +3,31 @@ import { autores, livros } from "../models/index.js";
 
 class LivroController {
 
-  static listarLivros = async (req, res, next) => {
+  static listarLivrosPaginado = async (req, res, next) => {
     try {
       const buscaLivros = livros.find();
 
       req.resultado = buscaLivros;
 
       next();
+    } catch (erro) {
+      next(erro);
+    }
+  };
+
+  static listarLivrosCompleto = async (req, res, next) => {
+    try {
+
+      const livroResultado = await livros.find()
+        .populate("autor", "nome")
+        .exec();
+
+      if (livroResultado !== null) {
+        res.status(200).send(livroResultado);
+      } else {
+        next(new NaoEncontrado("Id do livro não localizado."));
+      }
+
     } catch (erro) {
       next(erro);
     }
@@ -96,6 +114,7 @@ class LivroController {
       next(erro);
     }
   };
+
 }
 
 async function processaBusca(parametros) {
