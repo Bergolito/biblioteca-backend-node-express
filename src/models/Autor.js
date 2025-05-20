@@ -2,6 +2,8 @@ import mongoose from "mongoose";
 
 const autorSchema = new mongoose.Schema(
   {
+    //"_id": ObjectId(),
+    //_id: {type: ObjectId(), auto: true},
     id: {type: String},
     nome: {
       type: String,

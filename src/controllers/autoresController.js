@@ -2,6 +2,7 @@ import NaoEncontrado from "../erros/NaoEncontrado.js";
 import { autores } from "../models/index.js";
 
 class AutorController {
+  
   static listarAutores = async (req, res, next) => {
     try {
       const autoresResultado = autores.find();
@@ -26,6 +27,28 @@ class AutorController {
         next(new NaoEncontrado("Id do Autor não localizado."));
       }
     } catch (erro) {
+      next(erro);
+    }
+  };
+
+  static listarAutorPorFiltro = async (req, res, next) => {
+    console.log('listarAutorPorFiltro => ', req.query);
+    try {
+      const busca = await processaBusca(req.query);
+      console.log('busca => ', busca);
+      
+      if (busca !== null) {
+        const autoresResultado = autores.find(busca);
+        console.log('autoresResultado => ', autoresResultado);
+        
+        req.resultado = autoresResultado;
+
+        next();
+      } else {
+        res.status(200).send([]);
+      }
+    } catch (erro) {
+      console.log('Erro no listarAutorPorFiltro => ', erro);
       next(erro);
     }
   };
@@ -76,5 +99,21 @@ class AutorController {
     }
   };
 }
+
+async function processaBusca(parametros) {
+  console.log('params => ', parametros);
+
+  //const { nome, nacionalidade } = parametros;
+  const { nome } = parametros;
+
+  let busca = {};
+
+  // if (id) busca.id = id;
+  // if (_id) busca._id = _id;
+  if (nome) busca.nome = { $regex: nome, $options: "i" };
+  // if (nacionalidade) busca.nacionalidade = nacionalidade;
+
+  return busca;
+}  
 
 export default AutorController;
