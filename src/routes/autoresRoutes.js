@@ -7,7 +7,8 @@ const router = express.Router();
 router
   .get("/autores", AutorController.listarAutores, paginar)
   .get("/autores/:id", AutorController.listarAutorPorId)
-  .get("/autores/busca", AutorController.listarAutorPorFiltro, paginar)
+  //.get("/autores/busca", AutorController.listarAutorPorFiltro, paginar)
+  .get("/autores/busca", AutorController.listarAutorPorFiltro)
   .post("/autores", AutorController.cadastrarAutor)
   .put("/autores/:id", AutorController.atualizarAutor)
   .delete("/autores/:id", AutorController.excluirAutor);
