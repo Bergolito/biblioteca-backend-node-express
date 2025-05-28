@@ -3,7 +3,6 @@ import mongoose from "mongoose";
 const livroSchema = new mongoose.Schema(
   {
     id: {type: String},
-    //_id: {type: mongoose.Schema.Types.ObjectId},
     titulo: {
       type: String,
       required: [true, "O título do livro é obrigatório"]
@@ -42,6 +41,7 @@ const livroSchema = new mongoose.Schema(
     },
     numeroPaginas: {
       type: Number,
+      required: [false, "A quantidade de páginas não é obrigatória"],
       validate: {
         validator: (valor) => {
           return valor >= 10 && valor <= 5000;
