@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 const livroSchema = new mongoose.Schema(
   {
     id: {type: String},
+    //_id: {type: mongoose.Schema.Types.ObjectId},
     titulo: {
       type: String,
       required: [true, "O título do livro é obrigatório"]

@@ -20,6 +20,8 @@ class LivroController {
 
       const livroResultado = await livros.find()
         .populate("autor", "nome")
+        .populate("editora", "nome")
+        .sort({ titulo: 1 })
         .exec();
 
       if (livroResultado !== null) {

@@ -36,7 +36,7 @@ class EditoraController {
       const id = req.params.id;
 
       const livroResultado = await editoras.findById(id)
-        .populate("autor", "nome")
+        //.populate("autor", "nome")
         .exec();
 
       if (livroResultado !== null) {

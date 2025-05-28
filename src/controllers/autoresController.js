@@ -16,6 +16,8 @@ class AutorController {
   };
 
   static listarAutorPorId = async (req, res, next) => {
+    console.log('listarAutorPorId => ', req.params);
+    console.log('listarAutorPorId => ', req.query);
     try {
       const id = req.params.id;
 
@@ -35,9 +37,13 @@ class AutorController {
     console.log('listarAutorPorFiltro => ', req.query);
     try {
       const busca = await processaBusca(req.query);
+      //const busca = {nome: req.query.nome};
+
+      //console.log('busca => ', busca);
       console.log('busca => ', busca);
       
       if (busca !== null) {
+        //const autoresResultado = autores.find(busca);
         const autoresResultado = autores.find(busca);
         console.log('autoresResultado => ', autoresResultado);
         
@@ -109,7 +115,7 @@ async function processaBusca(parametros) {
   let busca = {};
 
   // if (id) busca.id = id;
-  // if (_id) busca._id = _id;
+  //if (_id) busca._id = _id;
   if (nome) busca.nome = { $regex: nome, $options: "i" };
   // if (nacionalidade) busca.nacionalidade = nacionalidade;
 
