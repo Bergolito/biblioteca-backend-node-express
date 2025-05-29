@@ -108,7 +108,6 @@ class LivroController {
           .find(busca)
           .populate("autor")
           .populate("editora");
-          //.exec();
 
         req.resultado = livrosResultado;
 
@@ -126,30 +125,35 @@ class LivroController {
 async function processaBusca(parametros) {
   console.log('params => ', parametros);
 
-  const { titulo, editora, nomeAutor, nomeEditora, numeroPaginas } = parametros;
+  const { titulo, autor, editora, numeroPaginas } = parametros;
 
   let busca = {};
 
   if (titulo) busca.titulo = { $regex: titulo, $options: "i" };
   if (editora) busca.editora = editora;
-  
-  // autor
-  if (nomeAutor) {
-    const autor = await autores.findOne({ nome: nomeAutor });
+  if (autor) busca.autor = autor;
 
-    if (autor !== null) {
-      busca.autor = autor.nome;
+  // autor
+  if (autor) {
+    console.log('autor => ', autor);
+    const autorEncontrado = await autores.findById(autor);
+    console.log('autorEncontrado => ', autorEncontrado);
+
+    if (autorEncontrado !== null) {
+      busca.autor = autorEncontrado._id;
     } else {
       busca = null;
     }
-  }
+  } 
 
   // editora
-  if (nomeEditora) {
-    const editora = await editoras.findOne({ nome: nomeEditora });
+  if (editora) {
+    console.log('editora => ', editora);
+    const editoraEncontrada = await editoras.findById(editora);
+    console.log('editoraEncontrada => ', editoraEncontrada);
 
-    if (editora !== null) {
-      busca.editora = editora.nome;
+    if (editoraEncontrada !== null) {
+      busca.editora = editoraEncontrada._id;
     } else {
       busca = null;
     }
