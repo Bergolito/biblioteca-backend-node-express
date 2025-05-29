@@ -16,10 +16,11 @@ class AutorController {
   };
 
   static listarAutorPorId = async (req, res, next) => {
-    console.log('listarAutorPorId => ', req.params);
-    console.log('listarAutorPorId => ', req.query);
+    console.log('listarAutorPorId req.params => ', req.params);
+    console.log('listarAutorPorId req.query => ', req.query);
     try {
       const id = req.params.id;
+      console.log('listarAutorPorId => id => ', id);
 
       const autorResultado = await autores.findById(id);
 
@@ -36,14 +37,12 @@ class AutorController {
   static listarAutorPorFiltro = async (req, res, next) => {
     console.log('listarAutorPorFiltro => ', req.query);
     try {
-      const busca = await processaBusca(req.query);
-      //const busca = {nome: req.query.nome};
 
-      //console.log('busca => ', busca);
+      const busca = await processaBusca(req.query);
+
       console.log('busca => ', busca);
       
       if (busca !== null) {
-        //const autoresResultado = autores.find(busca);
         const autoresResultado = autores.find(busca);
         console.log('autoresResultado => ', autoresResultado);
         
@@ -109,15 +108,11 @@ class AutorController {
 async function processaBusca(parametros) {
   console.log('params => ', parametros);
 
-  //const { nome, nacionalidade } = parametros;
   const { nome } = parametros;
 
   let busca = {};
 
-  // if (id) busca.id = id;
-  //if (_id) busca._id = _id;
   if (nome) busca.nome = { $regex: nome, $options: "i" };
-  // if (nacionalidade) busca.nacionalidade = nacionalidade;
 
   return busca;
 }  
