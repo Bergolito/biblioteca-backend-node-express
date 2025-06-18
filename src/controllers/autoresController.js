@@ -1,5 +1,6 @@
 import NaoEncontrado from "../erros/NaoEncontrado.js";
 import { autores } from "../models/index.js";
+import mongoose from "mongoose";
 
 class AutorController {
   
@@ -108,11 +109,22 @@ class AutorController {
 async function processaBusca(parametros) {
   console.log('params => ', parametros);
 
-  const { nome } = parametros;
+  const { nome, _id, id } = parametros;
 
   let busca = {};
 
   if (nome) busca.nome = { $regex: nome, $options: "i" };
+
+  // Validação de _id/id
+  const idBusca = _id || id;
+  if (idBusca) {
+    if (mongoose.Types.ObjectId.isValid(idBusca)) {
+      busca._id = idBusca;
+    } else {
+      // Se o id não for válido, retorna null para evitar CastError
+      return null;
+    }
+  }
 
   return busca;
 }  

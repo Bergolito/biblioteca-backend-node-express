@@ -4,7 +4,8 @@ import manipulador404 from "./middlewares/manipulador404.js";
 import manipuladorDeErros from "./middlewares/manipuladorDeErros.js";
 import routes from "./routes/index.js";
 import cors from "cors";
-
+import swaggerUi from "swagger-ui-express";
+import swaggerSpec from "./config/swaggerOptions.js";
 
 // Enable CORS for all origins (not recommended for production)
 db.on("error", console.log.bind(console, "Erro de conexão"));
@@ -19,9 +20,12 @@ app.use(cors());
 app.use(express.json());
 routes(app);
 
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
 app.use(manipulador404);
 
 // eslint-disable-next-line no-unused-vars
 app.use(manipuladorDeErros);
+
 
 export default app;
